@@ -7,6 +7,8 @@
   /* Blue */
   --color-blue-base: #2c46b1;
   --color-blue-dark: #2c4091;
+  --muted-foreground: #74798b;
+  --ring: #2c46b1;
 
   /* Grayscale */
   --color-white: #ffffff;

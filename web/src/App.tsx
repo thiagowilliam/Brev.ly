@@ -1,20 +1,15 @@
-import { Button } from './components/ui/button';
+import { Header } from './components/Header';
+import { MyLinks } from './components/MyLinks';
+import { NewLink } from './components/NewLink';
 
 export function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-
-      <button className="bg-blue-base text-white hover:bg-blue-dark">
-        Primário
-      </button>
-
-      <span className="text-danger">Campo obrigatório</span>
-      <p className="text-gray-500">Texto secundário</p>
-
-      <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button>Click me</Button>
-      </div>
-    </>
+    <main className="flex flex-col items-center justify-center min-h-screen max-w-5xl p-5 m-auto">
+      <Header />
+      <section className="flex flex-row gap-5 w-full items-start">
+        <NewLink />
+        <MyLinks />
+      </section>
+    </main>
   );
 }
