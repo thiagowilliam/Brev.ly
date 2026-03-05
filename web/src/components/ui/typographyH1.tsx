@@ -4,7 +4,7 @@ interface TypographyH1Props {
 
 export function TypographyH1({ children }: TypographyH1Props) {
   return (
-    <h1 className="text-gray-600 text-2xl font-semibold  tracking-tight text-balance">
+    <h1 className="text-gray-600 text-[20px] font-semibold  tracking-tight text-balance">
       {children}
     </h1>
   );

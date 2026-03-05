@@ -34,7 +34,7 @@ export function MyLinks() {
   }
 
   return (
-    <section className="w-145 bg-gray-100 rounded-sm p-8">
+    <section className="w-full md:w-145 bg-gray-100 rounded-sm p-8">
       <header className="flex justify-between">
         <TypographyH1>Meus links</TypographyH1>
         <Button
