@@ -21,13 +21,30 @@ export function NewLink() {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<NewLinkFormData>({
     resolver: zodResolver(newLinkSchema),
   });
 
-  function onSubmit(data: NewLinkFormData) {
-    console.log(data);
+  async function onSubmit(data: NewLinkFormData) {
+    const response = await fetch('http://localhost:3333/short', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 409) {
+      const { message } = await response.json();
+      setError('shortLink', { message });
+      return;
+    }
+
+    if (!response.ok) {
+      setError('root', { message: 'Erro ao criar o link. Tente novamente.' });
+      return;
+    }
+
     reset();
   }
 
@@ -66,6 +83,9 @@ export function NewLink() {
                 </p>
               )}
             </Field>
+            {errors.root && (
+              <p className="text-red-500 text-[12px]">{errors.root.message}</p>
+            )}
             <Field orientation="horizontal">
               <Button
                 className="w-full mt-2 cursor-pointer"
