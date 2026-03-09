@@ -8,7 +8,11 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod'
+import { AccessLinkRoute } from './routes/access-link'
 import { CreateShortLinkRoute } from './routes/create-short-link'
+import { DeleteLinkRoute } from './routes/delete-link'
+import { ExportLinksRoute } from './routes/export-links'
+import { GetLinksRoute } from './routes/get-links'
 import fastifyMultipart from '@fastify/multipart'
 import { fastifySwagger } from '@fastify/swagger'
 import { fastifySwaggerUi } from '@fastify/swagger-ui'
@@ -50,7 +54,11 @@ server.register(fastifySwaggerUi, {
   routePrefix: '/docs',
 })
 
+server.register(AccessLinkRoute)
 server.register(CreateShortLinkRoute)
+server.register(DeleteLinkRoute)
+server.register(ExportLinksRoute)
+server.register(GetLinksRoute)
 
 console.log(env.DATABASE_URL)
 

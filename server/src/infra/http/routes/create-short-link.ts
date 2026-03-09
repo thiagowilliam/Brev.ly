@@ -1,7 +1,8 @@
+import { db } from '@/infra/db'
+import { schema } from '@/infra/db/schemas'
+import { eq } from 'drizzle-orm'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-
-const linksStore = new Map<string, string>()
 
 export const CreateShortLinkRoute: FastifyPluginAsyncZod = async server => {
   server.post('/short', {
@@ -23,11 +24,20 @@ export const CreateShortLinkRoute: FastifyPluginAsyncZod = async server => {
   async (request, reply) => {
     const { originalLink, shortLink } = request.body
 
-    if (linksStore.has(shortLink)) {
+    const [existing] = await db
+      .select()
+      .from(schema.links)
+      .where(eq(schema.links.shortCode, shortLink))
+      .limit(1)
+
+    if (existing) {
       return reply.status(409).send({ message: 'Este link encurtado já está em uso.' })
     }
 
-    linksStore.set(shortLink, originalLink)
+    await db.insert(schema.links).values({
+      originalUrl: originalLink,
+      shortCode: shortLink,
+    })
 
     return reply.status(201).send({ shortLink: `brev.ly/${shortLink}` })
   })

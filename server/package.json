@@ -9,7 +9,8 @@
     "test:watch": "dotenv -e .env.test -- vitest",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx --env-file .env src/infra/db/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,8 @@
     "vitest": "^4.0.18"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1005.0",
+    "@aws-sdk/lib-storage": "^3.1005.0",
     "@fastify/cors": "^11.2.0",
     "@fastify/multipart": "^9.4.0",
     "@fastify/swagger": "^9.7.0",
@@ -35,6 +38,7 @@
     "fastify": "^5.7.4",
     "fastify-type-provider-zod": "^6.1.0",
     "postgres": "^3.4.8",
+    "uuidv7": "^1.1.0",
     "zod": "^4.3.6"
   }
 }
