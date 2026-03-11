@@ -11,6 +11,9 @@ dependencies:
   '@phosphor-icons/react':
     specifier: ^2.1.10
     version: 2.1.10(react-dom@19.2.0)(react@19.2.0)
+  '@tanstack/react-query':
+    specifier: ^5.90.21
+    version: 5.90.21(react@19.2.0)
   class-variance-authority:
     specifier: ^0.7.1
     version: 0.7.1
@@ -44,6 +47,9 @@ dependencies:
   zod:
     specifier: ^4.3.6
     version: 4.3.6
+  zustand:
+    specifier: ^5.0.11
+    version: 5.0.11(@types/react@19.2.7)(react@19.2.0)
 
 devDependencies:
   '@eslint/js':
@@ -2714,6 +2720,19 @@ packages:
       tailwindcss: 4.2.1
       vite: 7.3.1(@types/node@24.10.1)
     dev: true
+
+  /@tanstack/query-core@5.90.20:
+    resolution: {integrity: sha512-OMD2HLpNouXEfZJWcKeVKUgQ5n+n3A2JFmBaScpNDUqSrQSjiveC7dKMe53uJUg1nDG16ttFPz2xfilz6i2uVg==}
+    dev: false
+
+  /@tanstack/react-query@5.90.21(react@19.2.0):
+    resolution: {integrity: sha512-0Lu6y5t+tvlTJMTO7oh5NSpJfpg/5D41LlThfepTixPYkJ0sE2Jj0m0f6yYqujBwIXlId87e234+MxG3D3g7kg==}
+    peerDependencies:
+      react: ^18 || ^19
+    dependencies:
+      '@tanstack/query-core': 5.90.20
+      react: 19.2.0
+    dev: false
 
   /@ts-morph/common@0.27.0:
     resolution: {integrity: sha512-Wf29UqxWDpc+i61k3oIOzcUfQt79PIT9y/MWfAGlrkjg6lBC1hwDECLXPVJAhWjiGbfBCxZd65F/LIZF3+jeJQ==}
@@ -5872,3 +5891,25 @@ packages:
 
   /zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
+  /zustand@5.0.11(@types/react@19.2.7)(react@19.2.0):
+    resolution: {integrity: sha512-fdZY+dk7zn/vbWNCYmzZULHRrss0jx5pPFiOuMZ/5HJN6Yv3u+1Wswy/4MpZEkEGhtNH+pwxZB8OKgUBPzYAGg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+    dependencies:
+      '@types/react': 19.2.7
+      react: 19.2.0
+    dev: false

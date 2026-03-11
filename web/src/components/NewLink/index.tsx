@@ -1,6 +1,8 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { ConflictError, createShortLink } from '@/http/create-short-link';
 import { Button } from '../ui/button';
 import { Field, FieldGroup, FieldLabel, FieldSet } from '../ui/field';
 import { Input } from '../ui/input';
@@ -17,35 +19,36 @@ const newLinkSchema = z.object({
 type NewLinkFormData = z.infer<typeof newLinkSchema>;
 
 export function NewLink() {
+  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
     reset,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<NewLinkFormData>({
     resolver: zodResolver(newLinkSchema),
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: createShortLink,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['links'] });
+    },
+  });
+
   async function onSubmit(data: NewLinkFormData) {
-    const response = await fetch('http://localhost:3333/short', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (response.status === 409) {
-      const { message } = await response.json();
-      setError('shortLink', { message });
-      return;
+    try {
+      await mutateAsync(data);
+      reset();
+    } catch (error) {
+      if (error instanceof ConflictError) {
+        setError('shortLink', { message: error.message });
+      } else {
+        setError('root', { message: 'Erro ao criar o link. Tente novamente.' });
+      }
     }
-
-    if (!response.ok) {
-      setError('root', { message: 'Erro ao criar o link. Tente novamente.' });
-      return;
-    }
-
-    reset();
   }
 
   return (
@@ -71,12 +74,18 @@ export function NewLink() {
             </Field>
             <Field>
               <FieldLabel htmlFor="shortLink">Link encurtado</FieldLabel>
-              <Input
-                id="shortLink"
-                type="text"
-                placeholder="brev.ly/"
-                {...register('shortLink')}
-              />
+              <div className={`flex items-center min-h-12 rounded-md border bg-transparent shadow-xs focus-within:ring-[1px] ${errors.shortLink ? 'border-destructive focus-within:ring-destructive/20' : 'border-input focus-within:border-ring'}`}>
+                <span className="pl-3 text-sm text-gray-400 select-none whitespace-nowrap">
+                  brev.ly/
+                </span>
+                <input
+                  id="shortLink"
+                  type="text"
+                  placeholder="meu-link"
+                  className="flex-1 min-w-0 bg-transparent px-1 py-1 text-gray-600 text-sm outline-none placeholder:text-muted-foreground"
+                  {...register('shortLink')}
+                />
+              </div>
               {errors.shortLink && (
                 <p className="text-red-500 text-[12px] mt-1">
                   {errors.shortLink.message}
@@ -90,7 +99,7 @@ export function NewLink() {
               <Button
                 className="w-full mt-2 cursor-pointer"
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isPending}
               >
                 Salvar link
               </Button>

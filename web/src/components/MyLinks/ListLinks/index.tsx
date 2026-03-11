@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { CopyIcon, TrashIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface ListLinksProps {
   shortLink: string;
@@ -16,13 +16,12 @@ export function ListLinks({
   onDelete,
 }: ListLinksProps) {
   function handleCopy() {
-    navigator.clipboard.writeText(shortLink);
+    navigator.clipboard.writeText(originalLink);
     toast.success('Link copiado!');
   }
 
   function handleDelete() {
     onDelete();
-    toast.success('Link deletado!');
   }
 
   return (
