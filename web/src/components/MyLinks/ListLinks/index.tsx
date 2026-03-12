@@ -27,9 +27,14 @@ export function ListLinks({
   return (
     <div className="flex items-center justify-between py-4.5 border-b border-gray-200 last:border-b-0">
       <div className="flex flex-col gap-1">
-        <strong className="text-blue-base text-[14px] font-medium">
+        <a
+          href={shortLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-base text-[14px] font-medium hover:underline"
+        >
           {shortLink}
-        </strong>
+        </a>
         <p className="text-gray-500 text-[12px] font-normal">{originalLink}</p>
       </div>
       <div className="flex items-center">

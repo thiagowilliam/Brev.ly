@@ -9,7 +9,10 @@ import { Input } from '../ui/input';
 import { TypographyH1 } from '../ui/typographyH1';
 
 const newLinkSchema = z.object({
-  originalLink: z.url('Informe uma URL válida'),
+  originalLink: z
+    .string()
+    .transform(val => (val.match(/^https?:\/\//) ? val : `https://${val}`))
+    .pipe(z.url('Informe uma URL válida')),
   shortLink: z
     .string()
     .min(3, 'O link encurtado deve ter no mínimo 3 caracteres')

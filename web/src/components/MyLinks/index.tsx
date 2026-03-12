@@ -53,7 +53,7 @@ export function MyLinks() {
           links.map((link) => (
             <ListLinks
               key={link.id}
-              shortLink={`brev.ly/${link.shortCode}`}
+              shortLink={`http://localhost:5173/${link.shortCode}`}
               originalLink={link.originalUrl}
               qntViewed={link.accessCount}
               onDelete={() => handleDelete(link.id)}
