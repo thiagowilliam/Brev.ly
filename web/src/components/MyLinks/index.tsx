@@ -2,6 +2,7 @@ import { DownloadSimpleIcon } from '@phosphor-icons/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { deleteLink } from '@/http/delete-link';
+import { exportLinks } from '@/http/export-links';
 import { getLinks } from '@/http/get-links';
 import { Empty } from '../Empty';
 import { Button } from '../ui/button';
@@ -24,6 +25,16 @@ export function MyLinks() {
     },
   });
 
+  const { mutate: handleExport, isPending: isExporting } = useMutation({
+    mutationFn: exportLinks,
+    onSuccess: (url) => {
+      window.open(url, '_blank');
+    },
+    onError: () => {
+      toast.error('Erro ao exportar os links.');
+    },
+  });
+
   const links = [...(data?.links ?? [])].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -36,9 +47,11 @@ export function MyLinks() {
           className="cursor-pointer text-[12px] p-2"
           variant="secondary"
           size="sm"
+          disabled={isExporting}
+          onClick={() => handleExport()}
         >
           <DownloadSimpleIcon size={16} />
-          Baixar CSV
+          {isExporting ? 'Exportando...' : 'Baixar CSV'}
         </Button>
       </header>
 
