@@ -1,15 +1,18 @@
-import { db } from '@/infra/db'
-import { schema } from '@/infra/db/schemas'
 import { eq } from 'drizzle-orm'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { db } from '@/infra/db'
+import { schema } from '@/infra/db/schemas'
 
 export const CreateShortLinkRoute: FastifyPluginAsyncZod = async server => {
   server.post('/short', {
     schema: {
       summary: 'Create a short link',
       body: z.object({
-        originalLink: z.url(),
+        originalLink: z
+          .string()
+          .transform(val => (val.match(/^https?:\/\//) ? val : `https://${val}`))
+          .pipe(z.url()),
         shortLink: z
           .string()
           .min(3)

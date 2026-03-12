@@ -1,3 +1,4 @@
+import { desc } from 'drizzle-orm'
 import { db } from '@/infra/db'
 import { schema } from '@/infra/db/schemas'
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
@@ -22,8 +23,8 @@ export const GetLinksRoute: FastifyPluginAsyncZod = async server => {
       },
     },
   },
-  async (request, reply) => {
-    const links = await db.select().from(schema.links)
+  async (_request, reply) => {
+    const links = await db.select().from(schema.links).orderBy(desc(schema.links.createdAt))
 
     return reply.status(200).send({
       links: links.map(link => ({

@@ -12,7 +12,7 @@ export const AccessLinkRoute: FastifyPluginAsyncZod = async server => {
         shortCode: z.string(),
       }),
       response: {
-        302: z.void(),
+        200: z.object({ originalUrl: z.string() }),
         404: z.object({ message: z.string() }).describe('Short link not found.'),
       },
     },
@@ -35,6 +35,6 @@ export const AccessLinkRoute: FastifyPluginAsyncZod = async server => {
       .set({ accessCount: sql`${schema.links.accessCount} + 1` })
       .where(eq(schema.links.shortCode, shortCode))
 
-    return reply.redirect(link.originalUrl, 302)
+    return reply.status(200).send({ originalUrl: link.originalUrl })
   })
 }
