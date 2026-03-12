@@ -1,6 +1,8 @@
 import { CopyIcon, TrashIcon } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 
 interface ListLinksProps {
   shortLink: string;
@@ -15,13 +17,11 @@ export function ListLinks({
   shortLink,
   onDelete,
 }: ListLinksProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   function handleCopy() {
     navigator.clipboard.writeText(originalLink);
     toast.success('Link copiado!');
-  }
-
-  function handleDelete() {
-    onDelete();
   }
 
   return (
@@ -54,12 +54,23 @@ export function ListLinks({
             className="cursor-pointer w-8 h-8"
             variant="secondary"
             size="sm"
-            onClick={handleDelete}
+            onClick={() => setConfirmOpen(true)}
           >
             <TrashIcon size={16} />
           </Button>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Deletar link"
+        description="Tem certeza que deseja deletar este link? Esta ação não pode ser desfeita."
+        onConfirm={() => {
+          setConfirmOpen(false);
+          onDelete();
+        }}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }

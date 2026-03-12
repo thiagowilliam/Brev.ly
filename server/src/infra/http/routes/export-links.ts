@@ -20,6 +20,7 @@ export const ExportLinksRoute: FastifyPluginAsyncZod = async server => {
   async (request, reply) => {
     const links = await db
       .select({
+        id: schema.links.id,
         originalUrl: schema.links.originalUrl,
         shortCode: schema.links.shortCode,
         accessCount: schema.links.accessCount,
@@ -28,11 +29,12 @@ export const ExportLinksRoute: FastifyPluginAsyncZod = async server => {
       .from(schema.links)
       .orderBy(sql`${schema.links.createdAt} desc`)
 
-    const header = 'URL Original,URL Encurtada,Contagem de Acessos,Data de Criação\n'
+    const header = 'ID,URL Original,URL Encurtada,Contagem de Acessos,Data de Criação\n'
     const rows = links.map(link =>
       [
+        link.id,
         link.originalUrl,
-        `brev.ly/${link.shortCode}`,
+        link.shortCode,
         link.accessCount,
         link.createdAt.toISOString(),
       ].join(',')
