@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { resolveLink } from '@/http/resolve-link';
-import { Logo } from '@/components/Logo';
+
+import logo from '../assets/Logo_Icon.svg';
 
 export function RedirectPage() {
   const { shortCode } = useParams<{ shortCode: string }>();
@@ -25,9 +26,9 @@ export function RedirectPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 gap-8 p-5">
-      <Logo />
       <div className="bg-white rounded-sm p-10 flex flex-col items-center gap-4 max-w-md w-full text-center shadow-sm">
-        <h1 className="text-3xl font-bold text-blue-base">Redirecionando...</h1>
+        <img src={logo} width="48px" height="48px" alt='Brev.ly' />
+        <h1 className="text-3xl font-bold gray-600 mt-4 mb-6">Redirecionando...</h1>
         <p className="text-gray-400 text-sm">
           O link será aberto automaticamente em alguns instantes.
           <br />

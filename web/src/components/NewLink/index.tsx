@@ -7,6 +7,8 @@ import { Button } from '../ui/button';
 import { Field, FieldGroup, FieldLabel, FieldSet } from '../ui/field';
 import { Input } from '../ui/input';
 import { TypographyH1 } from '../ui/typographyH1';
+import { TriangleAlert } from 'lucide-react';
+import { toast } from 'sonner';
 
 const newLinkSchema = z.object({
   originalLink: z
@@ -44,6 +46,7 @@ export function NewLink() {
   async function onSubmit(data: NewLinkFormData) {
     try {
       await mutateAsync(data);
+      toast.success('Novo link criado!');
       reset();
     } catch (error) {
       if (error instanceof ConflictError) {
@@ -60,7 +63,7 @@ export function NewLink() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FieldSet className="w-full mt-6">
           <FieldGroup>
-            <Field>
+            <Field className='relative'>
               <FieldLabel htmlFor="originalLink">Link original</FieldLabel>
               <Input
                 id="originalLink"
@@ -70,12 +73,12 @@ export function NewLink() {
                 {...register('originalLink')}
               />
               {errors.originalLink && (
-                <p className="text-red-500 text-[12px] mt-1">
-                  {errors.originalLink.message}
+                <p className="flex items-center gap-2 absolute -bottom-5.5 text-red-500 text-[12px] mt-1">
+                  <TriangleAlert size={14} />{errors.originalLink.message}
                 </p>
               )}
             </Field>
-            <Field>
+            <Field className='relative'>
               <FieldLabel htmlFor="shortLink">Link encurtado</FieldLabel>
               <div className={`flex items-center min-h-12 rounded-md border bg-transparent shadow-xs focus-within:ring-[1px] ${errors.shortLink ? 'border-destructive focus-within:ring-destructive/20' : 'border-input focus-within:border-ring'}`}>
                 <span className="pl-3 text-sm text-gray-400 select-none whitespace-nowrap">
@@ -90,8 +93,8 @@ export function NewLink() {
                 />
               </div>
               {errors.shortLink && (
-                <p className="text-red-500 text-[12px] mt-1">
-                  {errors.shortLink.message}
+                <p className="flex items-center gap-2 absolute -bottom-5.5 text-red-500 text-[12px] mt-1">
+                  <TriangleAlert size={14} /> {errors.shortLink.message}
                 </p>
               )}
             </Field>
@@ -104,7 +107,8 @@ export function NewLink() {
                 type="submit"
                 disabled={isPending}
               >
-                Salvar link
+                {isPending ? 'Salvando' : 'Salvar link'}
+                
               </Button>
             </Field>
           </FieldGroup>
